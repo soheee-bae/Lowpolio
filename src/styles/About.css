@@ -1,0 +1,113 @@
+.about-container {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.first-section {
+  height: 90vh;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.about-split-left {
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  z-index: 1;
+}
+.about-icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  height: 10vh;
+  cursor: pointer;
+}
+.puzzel:hover,
+.book:hover,
+.earth:hover {
+  height: 60px;
+  width: auto;
+}
+
+.about-para-title {
+  margin: 2rem 3rem;
+  color: #da821e;
+  font-size: 25px;
+}
+
+.about-para {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 2rem;
+  height: auto;
+  margin: 0 3rem;
+}
+
+.about-para-first {
+  line-height: 1.7;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+.about-para-second {
+  line-height: 1.7;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+.about-split-right {
+  width: 70vw;
+  z-index: 1;
+}
+
+.aboutitem {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.7;
+  letter-spacing: 1px;
+  font-size: 12px;
+  background: white;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+
+.about-mini-item-para-title {
+  font-size: 15px;
+  color: #da821e;
+}
+
+@media only screen and (max-width: 1000px) {
+  .first-section {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+  }
+  .about-split-left {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+    text-align: center;
+    padding: 3rem;
+  }
+  .about-para-title {
+    margin: 1rem 2rem;
+  }
+  .about-split-right {
+    width: 100vw;
+  }
+  .second-section {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+  }
+}

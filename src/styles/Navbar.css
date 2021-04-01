@@ -1,0 +1,25 @@
+.Navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 10vh;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0, 0);
+}
+
+.navi-ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 100%;
+  align-items: center;
+}
+
+.nav-list {
+  padding: 1rem;
+  cursor: pointer;
+  font-size: 15px;
+  color: #5f5f5f;
+}
