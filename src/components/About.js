@@ -1,13 +1,11 @@
 import React, { useRef, Suspense, useEffect, useState } from "react";
-import { useGLTF } from "@react-three/drei";
-import { Canvas } from "react-three-fiber";
+import { useGLTF, useAnimations } from "@react-three/drei";
+import { Canvas, useFrame } from "react-three-fiber";
 import { Physics, usePlane } from "@react-three/cannon";
 import "../styles/About.css";
 import * as THREE from "three";
-import { useAnimations } from "@react-three/drei";
-import earths from "../img/earth.png";
-import books from "../img/book.png";
-import puz from "../img/puzzel.png";
+import { useSpring, animated } from "@react-spring/three";
+import { useHover } from "react-use-gesture";
 
 const Lights = () => {
   return (
@@ -40,9 +38,16 @@ const Plane = (props) => {
 };
 
 function AboutModel(props) {
+  const { puzzel, setPuzzel, earth, setEarth, book, setBook } = props;
   const group = useRef();
   const { nodes, materials, animations } = useGLTF("/models/AboutModels.glb");
   const { actions } = useAnimations(animations, group);
+  const [zoom, set] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+  }, [hovered]);
 
   const AboutAnimation = () => {
     actions.BookAction.play();
@@ -54,13 +59,35 @@ function AboutModel(props) {
     AboutAnimation();
   }, []);
 
+  const dummy = new THREE.Vector3();
+  useFrame((state, delta) => {
+    const step = 0.1;
+    state.camera.fov = THREE.MathUtils.lerp(
+      state.camera.fov,
+      zoom ? 45 : 45,
+      step
+    );
+    state.camera.position.lerp(
+      dummy.set(zoom ? 0 : 0, zoom ? 6 : 6, zoom ? 8 : 8),
+      step
+    );
+    state.camera.lookAt(0, 0.5, 0);
+    state.camera.updateProjectionMatrix();
+  });
   return (
     <group ref={group} {...props} dispose={null}>
-      <group
+      <animated.group
         name="earth"
         position={[1.07, 2.09, -2.14]}
         rotation={[2.2, -1.08, -0.74]}
         scale={[0.496, 0.496, 0.496]}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        onClick={() => {
+          setPuzzel(false);
+          setEarth(!earth);
+          setBook(false);
+        }}
       >
         <mesh
           receiveShadow
@@ -80,44 +107,54 @@ function AboutModel(props) {
           material={materials["Material.008"]}
           geometry={nodes.Icosphere004_2.geometry}
         />
-      </group>
-      <mesh
-        receiveShadow
-        castShadow
-        material={materials["Material.009"]}
-        geometry={nodes.puz1.geometry}
-        position={[-2.11, 1.99, -1.35]}
-        rotation={[0, 0.41, 0]}
-        scale={[0.25, 0.25, 0.17]}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        name="puz2"
-        material={materials["Material.010"]}
-        geometry={nodes.puz2.geometry}
-        position={[-1.42, 1.42, -1.07]}
-        rotation={[1.56, 0, -1.42]}
-        scale={[0.25, 0.25, 0.17]}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        material={materials["Material.011"]}
-        geometry={nodes.puz3.geometry}
-        position={[-2.35, 1.5, -1.25]}
-        rotation={[0, -1.17, -1.57]}
-        scale={[0.12, 0.17, 0.13]}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        material={materials["Material.012"]}
-        geometry={nodes.puz4.geometry}
-        position={[-1.64, 1.74, -1.55]}
-        rotation={[1.57, 0, -0.41]}
-        scale={[0.13, 0.17, 0.12]}
-      />
+      </animated.group>
+      <animated.group
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        onClick={() => {
+          setPuzzel(!puzzel);
+          setEarth(false);
+          setBook(false);
+        }}
+      >
+        <mesh
+          receiveShadow
+          castShadow
+          material={materials["Material.009"]}
+          geometry={nodes.puz1.geometry}
+          position={[-2.11, 1.99, -1.35]}
+          rotation={[0, 0.41, 0]}
+          scale={[0.25, 0.25, 0.17]}
+        />
+        <mesh
+          receiveShadow
+          castShadow
+          name="puz2"
+          material={materials["Material.010"]}
+          geometry={nodes.puz2.geometry}
+          position={[-1.42, 1.42, -1.07]}
+          rotation={[1.56, 0, -1.42]}
+          scale={[0.25, 0.25, 0.17]}
+        />
+        <mesh
+          receiveShadow
+          castShadow
+          material={materials["Material.011"]}
+          geometry={nodes.puz3.geometry}
+          position={[-2.35, 1.5, -1.25]}
+          rotation={[0, -1.17, -1.57]}
+          scale={[0.12, 0.17, 0.13]}
+        />
+        <mesh
+          receiveShadow
+          castShadow
+          material={materials["Material.012"]}
+          geometry={nodes.puz4.geometry}
+          position={[-1.64, 1.74, -1.55]}
+          rotation={[1.57, 0, -0.41]}
+          scale={[0.13, 0.17, 0.12]}
+        />
+      </animated.group>
       <group
         position={[0.39, 0.3, 0.83]}
         rotation={[0, 0.83, 0]}
@@ -142,11 +179,18 @@ function AboutModel(props) {
           geometry={nodes.Cylinder003_2.geometry}
         />
       </group>
-      <group
+      <animated.group
         name="Book"
         position={[2.11, 1.16, 1.1]}
         rotation={[0, -0.05, 0]}
         scale={[0.27, 0.05, 0.35]}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        onClick={() => {
+          setPuzzel(false);
+          setEarth(false);
+          setBook(!book);
+        }}
       >
         <mesh
           receiveShadow
@@ -172,7 +216,7 @@ function AboutModel(props) {
           material={materials["Material.015"]}
           geometry={nodes.Cube001_3.geometry}
         />
-      </group>
+      </animated.group>
       <group
         position={[0.98, 0.56, 0.59]}
         rotation={[Math.PI / 2, 0, 2.72]}
@@ -217,22 +261,6 @@ const About = () => {
   const [puzzel, setPuzzel] = useState(false);
   const [earth, setEarth] = useState(false);
   const [book, setBook] = useState(false);
-
-  const handlePuzzel = () => {
-    setPuzzel(!puzzel);
-    setEarth(false);
-    setBook(false);
-  };
-  const handleEarth = () => {
-    setPuzzel(false);
-    setEarth(!earth);
-    setBook(false);
-  };
-  const handleBook = () => {
-    setPuzzel(false);
-    setEarth(false);
-    setBook(!book);
-  };
   return (
     <div className="about-container">
       <section className="first-section">
@@ -249,6 +277,9 @@ const About = () => {
               passionate about learning new things and always willing to humble
               myself to continue growing.
             </p>
+            {!puzzel && !earth && !book && (
+              <p className="about-para-more">Click models for more... </p>
+            )}
             {puzzel && (
               <div className="aboutitem">
                 <p className="about-mini-item-para-title">Sociable</p>
@@ -279,32 +310,6 @@ const About = () => {
               </div>
             )}
           </div>
-          <div className="about-icons">
-            <img
-              onClick={handlePuzzel}
-              className="puzzel"
-              src={puz}
-              alt="puzzel"
-              height="50px"
-              width="auto"
-            />
-            <img
-              onClick={handleEarth}
-              className="earth"
-              src={earths}
-              alt="earth"
-              height="50px"
-              width="auto"
-            />
-            <img
-              onClick={handleBook}
-              className="book"
-              src={books}
-              alt="book"
-              height="50px"
-              width="auto"
-            />
-          </div>
         </div>
         <div className="about-split-right">
           <Canvas
@@ -312,17 +317,24 @@ const About = () => {
             shadowMap
             style={{
               position: "sticky",
-              height: "90vh",
+              height: "100vh",
               width: "auto",
             }}
-            camera={{ position: [0, 6, 8], fov: 45 }}
+            camera={{ position: [0, 1, 12], fov: 45 }}
             onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
           >
             <Physics>
               <Lights />
               <Plane />
               <Suspense fallback={null}>
-                <AboutModel />
+                <AboutModel
+                  puzzel={puzzel}
+                  setPuzzel={setPuzzel}
+                  earth={earth}
+                  setEarth={setEarth}
+                  book={book}
+                  setBook={setBook}
+                />
               </Suspense>
             </Physics>
           </Canvas>

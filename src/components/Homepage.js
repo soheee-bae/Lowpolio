@@ -1,13 +1,14 @@
-import React, { useRef, Suspense, useState } from "react";
+import React, { useRef, Suspense, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
-import { Canvas } from "react-three-fiber";
+import { Canvas, useFrame } from "react-three-fiber";
 import { useSpring, animated, a } from "@react-spring/three";
 import { useHover } from "react-use-gesture";
 import { proxy, useProxy } from "valtio";
 import { Physics, usePlane } from "@react-three/cannon";
 import { useAnimations } from "@react-three/drei";
 import * as THREE from "three";
-import "../styles/Home.css"
+import "../styles/Home.css";
+import Navbar from "./Navbar";
 
 const Lights = () => {
   return (
@@ -41,13 +42,28 @@ const Plane = (props) => {
 
 const HomeModel = (props) => {
   const [axarrow, setAxarrow] = useState(true);
-  const [tablearrow, setTablearrow] = useState(true);
   const [bagarrow, setBagarrow] = useState(true);
-  const [firearrow, setFirearrow] = useState(true);
-  const [grillarrow, setGrillarrow] = useState(true);
+  const [zoom, set] = useState(false);
   const group = useRef();
   const { nodes, materials, animations } = useGLTF("/models/HomeModels.glb");
   const { actions } = useAnimations(animations, group);
+
+  const dummy = new THREE.Vector3();
+  useFrame((state, delta) => {
+    const step = 0.1;
+    state.camera.fov = THREE.MathUtils.lerp(
+      state.camera.fov,
+      zoom ? 53 : 53,
+
+      step
+    );
+    state.camera.position.lerp(
+      dummy.set(zoom ? 0 : 0, zoom ? 15 : 15, zoom ? 11 : 11),
+      step
+    );
+    state.camera.lookAt(0, 0, 0);
+    state.camera.updateProjectionMatrix();
+  });
 
   const fireAnimation = () => {
     actions.smallwoodAction.clampWhenFinished = true;
@@ -68,7 +84,6 @@ const HomeModel = (props) => {
     actions.smoke12.play();
     actions.smoke13.play();
     actions.smoke14.play();
-    setFirearrow(false);
   };
 
   const axwoodAnimation = () => {
@@ -98,15 +113,14 @@ const HomeModel = (props) => {
   const campingTableAnimation = () => {
     actions.bread1Action.clampWhenFinished = true;
     actions.bread2Action.clampWhenFinished = true;
-    actions.apple1Action.setLoop(THREE.LoopOnce).play();
-    actions.apple2Action.setLoop(THREE.LoopOnce).play();
-    actions.breadAction.setLoop(THREE.LoopOnce).play();
-    actions.bread1Action.setLoop(THREE.LoopOnce).play();
-    actions.bread2Action.setLoop(THREE.LoopOnce).play();
-    actions.wineAction.setLoop(THREE.LoopOnce).play();
-    actions.wine2Action.setLoop(THREE.LoopOnce).play();
-    actions.winebottleAction.setLoop(THREE.LoopOnce).play();
-    setTablearrow(false);
+    actions.apple1Action.play();
+    actions.apple2Action.play();
+    actions.breadAction.play();
+    actions.bread1Action.play();
+    actions.bread2Action.play();
+    actions.wineAction.play();
+    actions.wine2Action.play();
+    actions.winebottleAction.play();
   };
 
   const barbequeAnimation = () => {
@@ -128,20 +142,61 @@ const HomeModel = (props) => {
     actions.grillsmoke9.play();
     actions.grillsmoke10.play();
     actions.grillsmoke11.play();
-    setGrillarrow(false);
   };
 
+  const OtherAnimation = () => {
+    actions.BallAction.play();
+    actions.SoHeeAction.play();
+    actions.BagarrowAction.play();
+    actions.AxarrowAction.play();
+  };
+  useEffect(() => {
+    fireAnimation();
+    campingTableAnimation();
+    barbequeAnimation();
+    OtherAnimation();
+  }, []);
+  const [hovered, setHovered] = useState(false);
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+  }, [hovered]);
   return (
     <group ref={group} {...props} dispose={null}>
       <mesh
-        receiveShadow
-        castShadow
+        name="Text"
         material={materials["Material.049"]}
         geometry={nodes.Text.geometry}
-        position={[-2.07, 0.03, 1.2]}
+        position={[-2.07, 0.15, 1.2]}
         rotation={[0, 0.38, 0]}
-        scale={[0.67, 0.67, 0.67]}
+        scale={[0.7, 0.7, 0.7]}
+        receiveShadow
+        castShadow
       />
+      <group
+        name="BAll"
+        position={[6.8, 1.34, 1.37]}
+        rotation={[-2.9, 0.09, 0.28]}
+        scale={[0.34, 0.34, 0.34]}
+      >
+        <mesh
+          receiveShadow
+          castShadow
+          material={materials["Material.030"]}
+          geometry={nodes.Icosphere029.geometry}
+        />
+        <mesh
+          receiveShadow
+          castShadow
+          material={materials["Material.029"]}
+          geometry={nodes.Icosphere029_1.geometry}
+        />
+        <mesh
+          receiveShadow
+          castShadow
+          material={materials["Material.038"]}
+          geometry={nodes.Icosphere029_2.geometry}
+        />
+      </group>
       <group
         position={[7.04, 0, 3.66]}
         rotation={[Math.PI / 2, 0, 2.39]}
@@ -313,7 +368,6 @@ const HomeModel = (props) => {
         position={[-4.71, 1.45, 2.24]}
         rotation={[Math.PI, -1.27, Math.PI]}
         scale={[2.64, 0.06, 0.39]}
-        onClick={campingTableAnimation}
       >
         <mesh
           receiveShadow
@@ -409,16 +463,6 @@ const HomeModel = (props) => {
           geometry={nodes.Cylinder047_2.geometry}
         />
       </group>
-      {tablearrow && (
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.012"]}
-          geometry={nodes.TableArrow.geometry}
-          position={[-4.78, 2.75, 0.76]}
-          scale={[0.37, 0.5, 0.07]}
-        />
-      )}
       <group
         name="bagapple"
         position={[-0.39, 0.35, 5.26]}
@@ -439,10 +483,18 @@ const HomeModel = (props) => {
         />
       </group>
       <group
-        onClick={campingbagAnimation}
         position={[-0.09, 0.27, 5.11]}
         rotation={[Math.PI, -1.57, Math.PI]}
         scale={[0.59, 0.35, 0.94]}
+        onClick={() => {
+          campingbagAnimation();
+        }}
+        onPointerOver={() => {
+          setHovered(true);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+        }}
       >
         <mesh
           receiveShadow
@@ -551,14 +603,6 @@ const HomeModel = (props) => {
           geometry={nodes.Cylinder007_2.geometry}
         />
       </group>
-      {bagarrow && (
-        <mesh
-          material={materials["Material.012"]}
-          geometry={nodes.bagArrow.geometry}
-          position={[-0.06, 2.37, 5.1]}
-          scale={[0.37, 0.6, 0.07]}
-        />
-      )}
       <group
         position={[3.36, 1.06, -1.92]}
         rotation={[0, -0.3, 0]}
@@ -634,7 +678,6 @@ const HomeModel = (props) => {
         />
       </group>
       <group
-        onClick={barbequeAnimation}
         name="barbequeMeat2"
         position={[3.44, 1.27, -1.9]}
         rotation={[-0.12, -1.05, -0.4]}
@@ -767,16 +810,6 @@ const HomeModel = (props) => {
         rotation={[0, 0.9, 0]}
         scale={[0.15, 0.15, 0.15]}
       />
-      {grillarrow && (
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.012"]}
-          geometry={nodes.meatArrow.geometry}
-          position={[3.46, 2.11, -2.34]}
-          scale={[0.37, 0.5, 0.07]}
-        />
-      )}
       <group
         name="fire"
         position={[3.18, 0.66, 2.94]}
@@ -801,7 +834,6 @@ const HomeModel = (props) => {
         position={[4.96, 0.36, 2.25]}
         rotation={[1.38, -0.68, 2.85]}
         scale={[1.07, 1.07, 1.07]}
-        onClick={fireAnimation}
       >
         <mesh
           receiveShadow
@@ -862,8 +894,6 @@ const HomeModel = (props) => {
         scale={[0.17, 0.17, 0.17]}
       />
       <mesh
-        receiveShadow
-        castShadow
         name="smoke005"
         material={materials["Material.002"]}
         geometry={nodes.smoke005.geometry}
@@ -972,22 +1002,20 @@ const HomeModel = (props) => {
           geometry={nodes.Icosphere001_3.geometry}
         />
       </group>
-      {firearrow && (
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.012"]}
-          geometry={nodes.FireArrow.geometry}
-          position={[5, 1.67, 2.29]}
-          scale={[0.37, 0.5, 0.07]}
-        />
-      )}
       <group
         name="ax"
         position={[-0.99, 1.46, -3.37]}
         rotation={[2.44, -0.78, 2.19]}
         scale={[-0.07, -0.41, -0.08]}
-        onClick={axwoodAnimation}
+        onClick={() => {
+          axwoodAnimation();
+        }}
+        onPointerOver={() => {
+          setHovered(true);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+        }}
       >
         <mesh
           receiveShadow
@@ -1006,6 +1034,7 @@ const HomeModel = (props) => {
         <mesh
           receiveShadow
           castShadow
+          name="Axarrow"
           material={materials["Material.012"]}
           geometry={nodes.Axarrow.geometry}
           position={[-1.25, 3.23, -3.4]}
@@ -1074,6 +1103,17 @@ const HomeModel = (props) => {
           geometry={nodes.Cylinder001_1.geometry}
         />
       </group>
+      {bagarrow && (
+        <mesh
+          receiveShadow
+          castShadow
+          name="Axarrow001"
+          material={materials["Material.012"]}
+          geometry={nodes.Axarrow001.geometry}
+          position={[0, 2.12, 4.2]}
+          scale={[0.37, 0.5, 0.07]}
+        />
+      )}
     </group>
   );
 };
@@ -1086,10 +1126,10 @@ const Homepage = () => {
         shadowMap
         style={{
           position: "sticky",
-          height: "90vh",
+          height: "100vh",
           width: "auto",
         }}
-        camera={{ position: [0, 15, 11], fov: 45 }}
+        camera={{ position: [0, 5, 12], fov: 50 }}
         onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
       >
         <Physics>

@@ -1,16 +1,31 @@
-import React, { useRef, Suspense, useState } from "react";
+import React, { useRef, Suspense, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "react-three-fiber";
 import { useSpring, animated } from "@react-spring/three";
 import { useHover } from "react-use-gesture";
 import { Physics, usePlane } from "@react-three/cannon";
 import "../styles/Skills.css";
+import { useAnimations } from "@react-three/drei";
 import * as THREE from "three";
 
 function SkillModel(props) {
   const group = useRef();
-  const { nodes, materials } = useGLTF("/models/SkillModels.glb");
+  const { nodes, materials, animations } = useGLTF("/models/SkillModels.glb");
+  const [hovered, setHovered] = useState(false);
+  const { actions } = useAnimations(animations, group);
 
+  const [zoom, set] = useState(false);
+  const actionPlay = () => {
+    actions.Arrow3Action.play();
+    actions.Arrow2Action.play();
+    actions.ArrowAction.play();
+  };
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+  }, [hovered]);
+  useEffect(() => {
+    actionPlay();
+  }, []);
   const [springFont, setspringFont] = useSpring(() => ({
     scale: [0.01, 0.01, 0.01],
   }));
@@ -19,8 +34,70 @@ function SkillModel(props) {
       scale: hovering ? [0.013, 0.013, 0.013] : [0.01, 0.01, 0.01],
     })
   );
-
-  const [zoom, set] = useState(false);
+  const [springHtml, setsprinHtml] = useSpring(() => ({
+    position: [-2.25, 0.06, -3.74],
+  }));
+  const bindHtml = useHover(({ hovering }) =>
+    setsprinHtml({
+      position: hovering ? [-2.25, 0.5, -3.74] : [-2.25, 0.06, -3.74],
+    })
+  );
+  const [springCSS, setsprinCSS] = useSpring(() => ({
+    position: [-2.26, 0.06, -2.69],
+  }));
+  const bindCSS = useHover(({ hovering }) =>
+    setsprinCSS({
+      position: hovering ? [-2.26, 0.5, -2.69] : [-2.26, 0.06, -2.69],
+    })
+  );
+  const [springJS, setsprinJS] = useSpring(() => ({
+    position: [-2.25, 0.06, -1.74],
+  }));
+  const bindJS = useHover(({ hovering }) =>
+    setsprinJS({
+      position: hovering ? [-2.25, 0.5, -1.74] : [-2.25, 0.06, -1.74],
+    })
+  );
+  const [springMongoDB, setsprinMongoDB] = useSpring(() => ({
+    position: [-2.26, 0.06, 3.2],
+  }));
+  const bindMongoDB = useHover(({ hovering }) =>
+    setsprinMongoDB({
+      position: hovering ? [-2.26, 0.5, 3.2] : [-2.26, 0.06, 3.2],
+    })
+  );
+  const [springNode, setsprinNode] = useSpring(() => ({
+    position: [-2.24, 0.06, 0.23],
+  }));
+  const bindNode = useHover(({ hovering }) =>
+    setsprinNode({
+      position: hovering ? [-2.24, 0.5, 0.23] : [-2.24, 0.06, 0.23],
+    })
+  );
+  const [springReact, setsprinReact] = useSpring(() => ({
+    position: [-2.26, 0.06, -0.71],
+  }));
+  const bindReact = useHover(({ hovering }) =>
+    setsprinReact({
+      position: hovering ? [-2.26, 0.5, -0.71] : [-2.26, 0.06, -0.71],
+    })
+  );
+  const [springSketch, setsprinSketch] = useSpring(() => ({
+    position: [-2.25, 0.06, 2.2],
+  }));
+  const bindSketch = useHover(({ hovering }) =>
+    setsprinSketch({
+      position: hovering ? [-2.25, 0.5, 2.2] : [-2.25, 0.06, 2.2],
+    })
+  );
+  const [springUI, setsprinUI] = useSpring(() => ({
+    position: [-2.25, 0.06, 1.21],
+  }));
+  const bindUI = useHover(({ hovering }) =>
+    setsprinUI({
+      position: hovering ? [-2.25, 0.5, 1.21] : [-2.25, 0.06, 1.21],
+    })
+  );
 
   const dummy = new THREE.Vector3();
   useFrame((state, delta) => {
@@ -31,305 +108,368 @@ function SkillModel(props) {
       step
     );
     state.camera.position.lerp(
-      dummy.set(zoom ? 0 : 0, zoom ? 9 : 12, zoom ? 9 : 0),
+      dummy.set(zoom ? 0 : 0, zoom ? 9 : 14, zoom ? 9 : 0),
       step
     );
-    state.camera.lookAt(0, 0, 0);
+    state.camera.lookAt(0, 0, -0.5);
     state.camera.updateProjectionMatrix();
   });
-
   return (
-    <group ref={group} position={[1, 0, 0]} {...props} dispose={null}>
-      <group
+    <group ref={group} {...props} dispose={null}>
+      <animated.group
         name="Css"
-        position={[-5.59, 0.06, -1.99]}
+        position={[-2.26, 0.06, -2.69]}
         rotation={[0, -0.01, -0.01]}
         scale={[0.504, 1, 0.537]}
+        {...springCSS}
+        {...bindCSS()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
       >
         <mesh
           receiveShadow
           castShadow
           material={materials["Material.014"]}
-          geometry={nodes.Text001.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.042"]}
           geometry={nodes.Text001_1.geometry}
         />
         <mesh
           receiveShadow
           castShadow
-          material={materials["Material.005"]}
+          material={materials["lambert18.042"]}
           geometry={nodes.Text001_2.geometry}
         />
-      </group>
+        <mesh
+          receiveShadow
+          castShadow
+          material={materials["Material.005"]}
+          geometry={nodes.Text001_3.geometry}
+        />
+      </animated.group>
       <mesh
-        receiveShadow
-        castShadow
         name="Fense_1001"
         material={materials["lambert37.034"]}
         geometry={nodes.Fense_1001.geometry}
-        position={[1.57, 0, 5.46]}
+        position={[4.89, 0, 4.76]}
         rotation={[Math.PI / 2, 0, -1.59]}
         scale={[0.01, 0.01, 0.01]}
-      />
-      <mesh
         receiveShadow
         castShadow
+      />
+      <mesh
         material={materials["Material.013"]}
         geometry={nodes.floor.geometry}
-        position={[0.64, 0, 0.33]}
+        position={[3.97, 0, -0.37]}
         scale={[3.2, 5.2, 4.47]}
+        receiveShadow
+        castShadow
       />
-      <group
-        name="Html"
-        position={[-5.57, 0.06, -3.05]}
-        rotation={[0.01, -0.01, 0]}
-        scale={[0.504, 1, 0.537]}
-      >
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.014"]}
-          geometry={nodes.Text.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.042"]}
-          geometry={nodes.Text_1.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.005"]}
-          geometry={nodes.Text_2.geometry}
-        />
-      </group>
-      <group
-        name="JS"
-        position={[-5.58, 0.06, -1.04]}
-        rotation={[0, -0.01, 0]}
-        scale={[0.504, 1, 0.537]}
-      >
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.014"]}
-          geometry={nodes.Text002.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.008"]}
-          geometry={nodes.Text002_1.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.007"]}
-          geometry={nodes.Text002_2.geometry}
-        />
-      </group>
-      <group
-        name="Mongodb"
-        position={[-5.59, 0.06, 3.9]}
-        rotation={[-0.01, -0.01, 0]}
-        scale={[0.504, 1, 0.537]}
-      >
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.014"]}
-          geometry={nodes.Text005.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.009"]}
-          geometry={nodes.Text005_1.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.039"]}
-          geometry={nodes.Text005_2.geometry}
-        />
-      </group>
-      <group
-        name="Node"
-        position={[-5.57, 0.06, 0.92]}
-        rotation={[-0.01, -0.01, 0]}
-        scale={[0.504, 1, 0.537]}
-      >
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.014"]}
-          geometry={nodes.Text004.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.009"]}
-          geometry={nodes.Text004_1.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.039"]}
-          geometry={nodes.Text004_2.geometry}
-        />
-      </group>
-      <group
-        name="React"
-        position={[-5.59, 0.06, -0.02]}
-        rotation={[-0.01, -0.01, 0]}
-        scale={[0.504, 1, 0.537]}
-      >
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.014"]}
-          geometry={nodes.Text003.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.042"]}
-          geometry={nodes.Text003_1.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.005"]}
-          geometry={nodes.Text003_2.geometry}
-        />
-      </group>
-      <group
-        name="sketch"
-        position={[-5.58, 0.06, 2.9]}
-        rotation={[0.01, -0.01, 0]}
-        scale={[0.504, 1, 0.537]}
-      >
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.014"]}
-          geometry={nodes.Text007.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.008"]}
-          geometry={nodes.Text007_1.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.007"]}
-          geometry={nodes.Text007_2.geometry}
-        />
-      </group>
-      <group
-        name="UI"
-        position={[-5.57, 0.06, 1.91]}
-        rotation={[-0.01, -0.01, 0]}
-        scale={[0.504, 1, 0.537]}
-      >
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.014"]}
-          geometry={nodes.Text006.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.008"]}
-          geometry={nodes.Text006_1.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["Material.007"]}
-          geometry={nodes.Text006_2.geometry}
-        />
-      </group>
       <animated.group
-        position={[-7.5, 0, 4]}
-        rotation={[Math.PI / 2, 0, 0]}
-        scale={[0.01, 0.01, 0.01]}
-        {...springFont}
-        {...bindFont()}
-        onClick={() => set(!zoom)}
+        name="Html"
+        position={[-2.25, 0.06, -3.74]}
+        rotation={[0.01, -0.01, 0]}
+        scale={[0.504, 1, 0.537]}
+        {...springHtml}
+        {...bindHtml()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
       >
         <mesh
+          material={materials["Material.014"]}
+          geometry={nodes.Text_1.geometry}
           receiveShadow
           castShadow
-          material={materials["Material.002"]}
-          geometry={nodes.Mesh032.geometry}
         />
         <mesh
+          material={materials["lambert18.042"]}
+          geometry={nodes.Text_2.geometry}
           receiveShadow
           castShadow
-          material={materials["lambert37.032"]}
-          geometry={nodes.Mesh032_1.geometry}
         />
         <mesh
+          material={materials["Material.005"]}
+          geometry={nodes.Text_3.geometry}
           receiveShadow
           castShadow
-          material={materials["Material.003"]}
-          geometry={nodes.Mesh032_2.geometry}
         />
       </animated.group>
-      <group rotation={[Math.PI / 2, 0, 0]} scale={[0.01, 0.01, 0.01]}>
+      <animated.group
+        name="JS"
+        position={[-2.25, 0.06, -1.74]}
+        rotation={[0, -0.01, 0]}
+        scale={[0.504, 1, 0.537]}
+        {...springJS}
+        {...bindJS()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
         <mesh
+          material={materials["Material.014"]}
+          geometry={nodes.Text002.geometry}
           receiveShadow
           castShadow
-          material={materials["Material #25"]}
-          geometry={nodes.Mesh.geometry}
         />
         <mesh
+          material={materials["lambert18.008"]}
+          geometry={nodes.Text002_1.geometry}
           receiveShadow
           castShadow
-          material={materials["Material #25.005"]}
-          geometry={nodes.Mesh_1.geometry}
         />
-      </group>
+        <mesh
+          material={materials["Material.007"]}
+          geometry={nodes.Text002_2.geometry}
+          receiveShadow
+          castShadow
+        />
+      </animated.group>
+      <animated.group
+        name="Mongodb"
+        position={[-2.26, 0.06, 3.2]}
+        rotation={[-0.01, -0.01, 0]}
+        scale={[0.504, 1, 0.537]}
+        {...springMongoDB}
+        {...bindMongoDB()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
+        <mesh
+          material={materials["Material.014"]}
+          geometry={nodes.Text005.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["Material.009"]}
+          geometry={nodes.Text005_1.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["lambert18.039"]}
+          geometry={nodes.Text005_2.geometry}
+          receiveShadow
+          castShadow
+        />
+      </animated.group>
+      <animated.group
+        name="Node"
+        position={[-2.24, 0.06, 0.23]}
+        rotation={[-0.01, -0.01, 0]}
+        scale={[0.504, 1, 0.537]}
+        {...springNode}
+        {...bindNode()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
+        <mesh
+          material={materials["Material.014"]}
+          geometry={nodes.Text004.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["Material.009"]}
+          geometry={nodes.Text004_1.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["lambert18.039"]}
+          geometry={nodes.Text004_2.geometry}
+          receiveShadow
+          castShadow
+        />
+      </animated.group>
+      <animated.group
+        name="React"
+        position={[-2.26, 0.06, -0.71]}
+        rotation={[-0.01, -0.01, 0]}
+        scale={[0.504, 1, 0.537]}
+        {...springReact}
+        {...bindReact()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
+        <mesh
+          material={materials["Material.014"]}
+          geometry={nodes.Text003.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["lambert18.042"]}
+          geometry={nodes.Text003_1.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["Material.005"]}
+          geometry={nodes.Text003_2.geometry}
+          receiveShadow
+          castShadow
+        />
+      </animated.group>
+      <animated.group
+        name="sketch"
+        position={[-2.25, 0.06, 2.2]}
+        rotation={[0.01, -0.01, 0]}
+        scale={[0.504, 1, 0.537]}
+        {...springSketch}
+        {...bindSketch()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
+        <mesh
+          material={materials["Material.014"]}
+          geometry={nodes.Text007.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["lambert18.008"]}
+          geometry={nodes.Text007_1.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["Material.007"]}
+          geometry={nodes.Text007_2.geometry}
+          receiveShadow
+          castShadow
+        />
+      </animated.group>
+      <animated.group
+        name="UI"
+        position={[-2.25, 0.06, 1.21]}
+        rotation={[-0.01, -0.01, 0]}
+        scale={[0.504, 1, 0.537]}
+        {...springUI}
+        {...bindUI()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
+        <mesh
+          material={materials["Material.014"]}
+          geometry={nodes.Text006.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["lambert18.008"]}
+          geometry={nodes.Text006_1.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["Material.007"]}
+          geometry={nodes.Text006_2.geometry}
+          receiveShadow
+          castShadow
+        />
+      </animated.group>
       <group
-        position={[-7.2, 0, -2.42]}
-        rotation={[Math.PI / 2, 0, -2.89]}
+        position={[3.19, 0, -1.2]}
+        rotation={[Math.PI / 2, 0, 0.01]}
         scale={[0.01, 0.01, 0.01]}
       >
         <mesh
+          material={materials["Material #25"]}
+          geometry={nodes.Mesh.geometry}
           receiveShadow
           castShadow
-          material={materials["lambert37.004"]}
-          geometry={nodes.Mesh033.geometry}
         />
         <mesh
+          material={materials["Material #25.005"]}
+          geometry={nodes.Mesh_1.geometry}
           receiveShadow
           castShadow
-          material={materials["lambert18.002"]}
-          geometry={nodes.Mesh033_1.geometry}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          material={materials["lambert18.001"]}
-          geometry={nodes.Mesh033_2.geometry}
         />
       </group>
       <mesh
+        material={materials["Material.001"]}
+        geometry={nodes.Text008.geometry}
+        position={[-9.71, 0.1, -0.13]}
+        rotation={[0, 0, 0]}
+        scale={[0.76, 1.51, 0.81]}
         receiveShadow
         castShadow
-        material={materials["Material.014"]}
-        geometry={nodes.clickme.geometry}
-        position={[-8.7, 0.02, 5.3]}
-        scale={[0.41, 0.41, 0.41]}
+      />
+      <mesh
+        material={materials["Material.008"]}
+        geometry={nodes.Text.geometry}
+        position={[-2.3, 0.04, 5.66]}
+        scale={[0.4, 0.4, 0.4]}
+        receiveShadow
+        castShadow
+      />
+      <mesh
+        name="Arrow"
+        material={materials["Material.008"]}
+        geometry={nodes.Arrow.geometry}
+        position={[-1.59, -0.41, 5]}
+        rotation={[0, -0.77, 0]}
+        scale={[0.1, 0.07, 0.1]}
+        receiveShadow
+        castShadow
+      />
+      <mesh
+        name="Arrow2"
+        material={materials["Material.008"]}
+        geometry={nodes.Arrow2.geometry}
+        position={[-1.59, -0.4, 4.59]}
+        rotation={[0, -0.77, 0]}
+        scale={[0.1, 0.07, 0.1]}
+        receiveShadow
+        castShadow
+      />
+      <mesh
+        name="Arrow3"
+        material={materials["Material.008"]}
+        geometry={nodes.Arrow3.geometry}
+        position={[-1.59, -0.42, 4.17]}
+        rotation={[0, -0.77, 0]}
+        scale={[0.1, 0.07, 0.1]}
+        receiveShadow
+        castShadow
+      />
+      <group
+        position={[-4.73, 0, -3.88]}
+        rotation={[Math.PI / 2, 0, 0]}
+        scale={[0.01, 0.01, 0.01]}
+      >
+        <mesh
+          material={materials["lambert18.001"]}
+          geometry={nodes.Mesh029.geometry}
+          receiveShadow
+          castShadow
+        />
+        <mesh
+          material={materials["lambert18.002"]}
+          geometry={nodes.Mesh029_1.geometry}
+          receiveShadow
+          castShadow
+        />
+      </group>
+      <animated.mesh
+        material={materials["lambert18.001"]}
+        geometry={nodes.wheat1001.geometry}
+        position={[9.32, 0, 4.5]}
+        rotation={[Math.PI / 2, 0, -1.17]}
+        scale={[0.01, 0.01, 0.01]}
+        receiveShadow
+        castShadow
+        {...springFont}
+        {...bindFont()}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        onClick={() => set(!zoom)}
+      />
+      <mesh
+        material={materials["Material.008"]}
+        geometry={nodes.Text001.geometry}
+        position={[8.6, 0.04, 5.66]}
+        scale={[0.4, 0.4, 0.4]}
+        receiveShadow
+        castShadow
       />
     </group>
   );
@@ -338,11 +478,11 @@ function SkillModel(props) {
 const Lights = () => {
   return (
     <>
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={0.3} />
       <directionalLight
         castShadow
-        position={[-6, 8, 3]}
-        intensity={1.4}
+        position={[-6, 8, 5]}
+        intensity={1}
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-camera-far={50}
@@ -360,7 +500,7 @@ const Plane = (props) => {
   return (
     <mesh ref={ref} receiveShadow>
       <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
-      <meshLambertMaterial attach="material" color="#81523d" />
+      <meshLambertMaterial attach="material" color="#7D5646" />
     </mesh>
   );
 };
@@ -368,22 +508,16 @@ const Plane = (props) => {
 const Skills = () => {
   return (
     <div className="Skills">
-      <div className="skill-left">
-        <h1 className="skill-title">SKILLS</h1>
-        <p className="skill-para">
-          The main area of my expertise is front-end web development.
-        </p>
-      </div>
       <div className="skill-right">
         <Canvas
           colorManagement
           shadowMap
           style={{
             position: "sticky",
-            height: "90vh",
+            height: "100vh",
             width: "auto",
           }}
-          camera={{ position: [0, 12, 0], fov: 60 }}
+          camera={{ position: [0, 14, 0], fov: 100 }}
           onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
         >
           <Physics>

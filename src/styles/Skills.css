@@ -2,35 +2,4 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  height: 90vh;
-  width: auto;
-}
-
-.skill-left {
-  width: 30vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.5rem;
-}
-
-.skill-right {
-  width: 70vw;
-  z-index: 1;
-}
-
-.skill-title {
-  margin: 2rem 3rem;
-  color: #81523d;
-  font-size: 25px;
-}
- 
-.skill-para {
-  height: auto;
-  margin: 0 3rem;
-  line-height: 1.7;
-  letter-spacing: 1px;
-  font-size: 14px;
 }

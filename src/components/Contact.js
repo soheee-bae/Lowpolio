@@ -1,10 +1,11 @@
-import React, { useRef, Suspense } from "react";
+import React, { useRef, Suspense, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
-import { Canvas } from "react-three-fiber";
+import { Canvas, useFrame } from "react-three-fiber";
 import { useSpring, animated, a } from "@react-spring/three";
 import { useHover } from "react-use-gesture";
 import { proxy, useProxy } from "valtio";
 import { Physics, usePlane } from "@react-three/cannon";
+import * as THREE from "three";
 
 const state = proxy({
   current: null,
@@ -19,7 +20,11 @@ function ContactModel(props) {
   const group = useRef();
   const snap = useProxy(state);
   const { nodes, materials } = useGLTF("/models/ContactModels.glb");
-
+  const [zoom, set] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+  }, [hovered]);
   const [springFont, setspringFont] = useSpring(() => ({
     scale: [1.16, 1.16, 1.16],
   }));
@@ -44,7 +49,21 @@ function ContactModel(props) {
   const bindFont3 = useHover(({ hovering }) =>
     setspringFont3({ scale: hovering ? [1.04, 0.2, 1.04] : [1.04, 0.02, 1.04] })
   );
-
+  const dummy = new THREE.Vector3();
+  useFrame((state, delta) => {
+    const step = 0.1;
+    state.camera.fov = THREE.MathUtils.lerp(
+      state.camera.fov,
+      zoom ? 50 :48,
+      step
+    );
+    state.camera.position.lerp(
+      dummy.set(zoom ? 0 : 0, zoom ? 1 : 1, zoom ? 12 : 12),
+      step
+    );
+    state.camera.lookAt(0, 0, -10);
+    state.camera.updateProjectionMatrix();
+  });
   return (
     <group ref={group} {...props} dispose={null}>
       <group
@@ -167,9 +186,11 @@ function ContactModel(props) {
         rotation={[1.57, 0, 0]}
         onPointerOver={() => {
           state.items.gmail = "#bb001b";
+          setHovered(true);
         }}
         onPointerOut={() => {
           state.items.gmail = "#ffffff";
+          setHovered(false);
         }}
         {...springFont1}
         {...bindFont1()}
@@ -198,9 +219,11 @@ function ContactModel(props) {
         rotation={[1.57, 0, 0]}
         onPointerOver={() => {
           state.items.linkedin = "#000000";
+          setHovered(true);
         }}
         onPointerOut={() => {
           state.items.linkedin = "#ffffff";
+          setHovered(false);
         }}
         {...springFont2}
         {...bindFont2()}
@@ -228,9 +251,11 @@ function ContactModel(props) {
         rotation={[1.57, 0, 0]}
         onPointerOver={() => {
           state.items.github = "#0e56ff";
+          setHovered(true);
         }}
         onPointerOut={() => {
           state.items.github = "#ffffff";
+          setHovered(false);
         }}
         {...springFont3}
         {...bindFont3()}
@@ -291,11 +316,11 @@ const Contact = () => {
         shadowMap
         style={{
           position: "sticky",
-          height: "90vh",
+          height: "100vh",
           width: "auto",
         }}
         camera={{ position: [0, 1, 12], fov: 50 }}
-        onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
+        onCreated={({ camera }) => camera.lookAt(0, 0, -10)}
       >
         <Physics>
           <Lights />

@@ -1,0 +1,102 @@
+.Project {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+}
+
+.Project_left {
+  width: 30vw;
+  height: auto;
+  margin: auto;
+}
+.Project_right {
+  width: 70vw;
+  height: auto;
+}
+
+.Project_bakedbread,
+.Project_reusd,
+.Project_fireferret {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3rem;
+  margin: 0rem 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s forwards;
+}
+
+.Project_reusd h4,
+.Project_fireferret h4 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  word-spacing: 2px;
+  letter-spacing: 0.5px;
+}
+.Project_bakedbread h1,
+.Project_reusd h1,
+.Project_fireferret h1 {
+  font-size: 40px;
+}
+.Project_bakedbread p,
+.Project_reusd p,
+.Project_fireferret p {
+  font-size: 13px;
+  line-height: 2;
+  word-spacing: 2px;
+  letter-spacing: 0.5px;
+}
+.Project_bakedbread button,
+.Project_reusd button,
+.Project_fireferret button {
+  width: 40%;
+  border: none;
+  background: #514945;
+  padding: 1rem 0.5rem;
+  border-radius: 10px;
+  color: white;
+}
+.Project_reusd {
+}
+
+@keyframes fadeUp {
+  0% {
+    transform: translateY(-10rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes scale {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(100%);
+  }
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-360deg);
+  }
+}
