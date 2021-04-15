@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap");
 .Navbar {
   position: fixed;
   z-index: 5;
@@ -7,6 +8,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  font-family: "Open Sans", sans-serif;
 }
 .navi-ul {
   display: flex;
@@ -22,6 +24,18 @@
 .navi-ul-left {
   margin-left: 2rem;
   font-weight: bold;
+  color: black;
+}
+.navi-ul-left p {
+  color: black;
+  font-size: 16px;
+  float: right;
+  margin-left: 2px;
+}
+
+.logo {
+  color: black;
+  font-size: 16px;
 }
 .nav-list {
   padding: 1rem 1.1rem;
@@ -33,4 +47,9 @@
 .nav-list:hover {
   border-bottom: 3px solid black;
   color: black;
+}
+@media (max-width: 768px) {
+  .nav-list {
+    color: black;
+  }
 }

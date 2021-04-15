@@ -2,8 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-auto-flow: column;
 }
 
 .Project_left {
@@ -19,8 +19,8 @@
 .Project_bakedbread,
 .Project_reusd,
 .Project_fireferret {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-flow: row;
   justify-content: center;
   gap: 3rem;
   margin: 0rem 3rem;
@@ -55,11 +55,17 @@
   width: 40%;
   border: none;
   background: #514945;
-  padding: 1rem 0.5rem;
+  padding: 0.7rem 0.5rem;
   border-radius: 10px;
   color: white;
+  cursor: pointer;
+  outline: none;
 }
-.Project_reusd {
+
+.Project_bakedbread button:hover,
+.Project_reusd button:hover,
+.Project_fireferret button:hover {
+  background: #413a37;
 }
 
 @keyframes fadeUp {
@@ -98,5 +104,27 @@
   100% {
     opacity: 1;
     transform: rotate(-360deg);
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .Project {
+    display: grid;
+    grid-auto-flow: row dense;
+  }
+  .Project_left {
+    width: 100vw;
+    height: auto;
+    margin: auto;
+  }
+  .Project_right {
+    width: 100vw;
+    height: auto;
+  }
+  .Project_bakedbread,
+  .Project_reusd,
+  .Project_fireferret {
+    margin: 4rem 0rem 2rem 0rem;
+    padding: 3rem;
   }
 }

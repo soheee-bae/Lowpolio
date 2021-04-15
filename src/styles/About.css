@@ -1,29 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap");
 .about-container {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-flow: row;
 }
 
 .first-section {
   height: 90vh;
   width: auto;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-auto-flow: column;
 }
 
 .about-split-left {
   width: 30vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-auto-flow: row;
+  align-content: center;
   gap: 1.5rem;
   z-index: 1;
+  font-family: "Open Sans", sans-serif;
 }
 
 .about-para-title {
-  margin:  3rem;
+  margin: 2rem 3rem;
   color: #da821e;
   font-size: 35px;
   opacity: 0;
@@ -32,9 +34,9 @@
 }
 
 .about-para {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  display: grid;
+  grid-auto-flow: row;
+  align-content: center;
   gap: 2rem;
   height: auto;
   margin: 0 3rem;
@@ -66,8 +68,8 @@
 }
 
 .aboutitem {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-flow: row;
   line-height: 1.7;
   letter-spacing: 1px;
   font-size: 12px;
@@ -90,28 +92,27 @@
 @media only screen and (max-width: 1000px) {
   .first-section {
     width: 100vw;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-auto-flow: row;
   }
   .about-split-left {
     width: 100vw;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-auto-flow: row;
     justify-content: center;
     gap: 1.5rem;
-    text-align: center;
+    margin: 0rem;
     padding: 3rem;
   }
   .about-para-title {
-    margin: 1rem 2rem;
+    margin: 3rem 0rem 2rem 0rem;
+  }
+  .about-para {
+    margin: 0rem;
+    align-self: center;
   }
   .about-split-right {
     width: 100vw;
-  }
-  .second-section {
-    display: flex;
-    flex-direction: column;
-    margin-top: 3rem;
   }
 }
 

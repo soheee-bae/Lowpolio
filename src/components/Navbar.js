@@ -1,13 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCampground } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   return (
     <div className="Navbar">
       <div className="navi-ul-left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <ol className="nav-list">Home</ol>
+          <FontAwesomeIcon className="logo" icon={faCampground} />
+          <p>BSH</p>
         </Link>
       </div>
       <div className="navi-ul">

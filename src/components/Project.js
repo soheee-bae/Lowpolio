@@ -365,6 +365,11 @@ const Project = () => {
   const [bakedLeft, setbakedLeft] = useState(false);
   const [bakedRight, setbakedRight] = useState(false);
   const [fireLeft, setfireLeft] = useState(false);
+  const bakedBreadLink = (e) => {
+    e.preventDefault();
+    window.open("https://bakedbread-385c4.web.app", "_blank");
+  };
+
   return (
     <div className="Project">
       <section className="Project_left">
@@ -378,7 +383,7 @@ const Project = () => {
               and built this website to allow customers to get a good idea of
               this bakery.
             </p>
-            <button>Visit The Site</button>
+            <button onClick={bakedBreadLink}>Visit The Site</button>
           </div>
         )}
         {reusdRight && (
@@ -391,7 +396,13 @@ const Project = () => {
               and built this website to allow customers to get a good idea of
               this bakery.
             </p>
-            <button>Visit The Site</button>
+            <button
+              onClick={bakedBreadLink}
+              onClick={bakedBreadLink}
+              onClick={bakedBreadLink}
+            >
+              Visit The Site
+            </button>
           </div>
         )}
         {bakedLeft && (
@@ -409,7 +420,7 @@ const Project = () => {
               sellers instead of sellers posting their phone number or email
               address to the public.{" "}
             </p>
-            <button>Visit The Site</button>
+            {/* <button>Visit The Site</button> */}
           </div>
         )}
         {bakedRight && (
@@ -425,7 +436,7 @@ const Project = () => {
               pandemic. Though intended for travellers, this app can also be
               used to track changes in policy for one’s own state.
             </p>
-            <button>Visit The Site</button>
+            {/*  <button>Visit The Site</button>*/}
           </div>
         )}
         {fireLeft && (
@@ -438,7 +449,7 @@ const Project = () => {
               and built this website to allow customers to get a good idea of
               this bakery.
             </p>
-            <button>Visit The Site</button>
+            <button onClick={bakedBreadLink}>Visit The Site</button>
           </div>
         )}
       </section>
