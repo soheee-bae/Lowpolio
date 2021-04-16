@@ -61,41 +61,14 @@ const ProjectModels = (props) => {
   const { nodes, materials } = useGLTF("/models/ProjectModels.glb");
   const [hovered, setHovered] = useState(false);
 
+  const [reusdRightpo, setreusdRightpo] = useState([-20.3, 0.05, 5]);
+  const [fireferretLeftpo, setfireferretLeftpo] = useState([20.8, 0.05, 4.49]);
+  const [bakedLeftpo, setbakedLeftpo] = useState([-1, 0.05, 4.49]);
+  const [bakedRightpo, setbakedRightpo] = useState([1, 0.05, 4.49]);
+
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "auto";
   }, [hovered]);
-  const [springArrow, setspringArrow] = useSpring(() => ({
-    scale: [0.55, 0.29, 0.14],
-  }));
-  const bindArrow = useHover(({ hovering }) =>
-    setspringArrow({
-      scale: hovering ? [0.6, 0.34, 0.19] : [0.55, 0.29, 0.14],
-    })
-  );
-  const [springArrow1, setspringArrow1] = useSpring(() => ({
-    scale: [0.55, 0.29, 0.14],
-  }));
-  const bindArrow1 = useHover(({ hovering }) =>
-    setspringArrow1({
-      scale: hovering ? [0.6, 0.34, 0.19] : [0.55, 0.29, 0.14],
-    })
-  );
-  const [springArrow2, setspringArrow2] = useSpring(() => ({
-    scale: [0.55, 0.29, 0.14],
-  }));
-  const bindArrow2 = useHover(({ hovering }) =>
-    setspringArrow2({
-      scale: hovering ? [0.6, 0.34, 0.19] : [0.55, 0.29, 0.14],
-    })
-  );
-  const [springArrow3, setspringArrow3] = useSpring(() => ({
-    scale: [0.55, 0.29, 0.14],
-  }));
-  const bindArrow3 = useHover(({ hovering }) =>
-    setspringArrow3({
-      scale: hovering ? [0.6, 0.34, 0.19] : [0.55, 0.29, 0.14],
-    })
-  );
 
   const dummy = new THREE.Vector3();
   useFrame((state, delta) => {
@@ -280,18 +253,22 @@ const ProjectModels = (props) => {
           geometry={nodes.Text014_3.geometry}
         />
       </group>
-      <animated.mesh
+      <mesh
         receiveShadow
         castShadow
         material={materials["Material.001"]}
         geometry={nodes.reusdright.geometry}
-        position={[-16.01, 0.67, 4.49]}
-        rotation={[0, 0, 0]}
+        position={reusdRightpo}
+        rotation={[1.57, 0, -0.01]}
         scale={[0.55, 0.29, 0.14]}
-        {...springArrow}
-        {...bindArrow()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setreusdRightpo([-20.3, 0.3, 5]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setreusdRightpo([-20.3, 0.05, 5]);
+        }}
         onClick={() => {
           setfireLeft(!fireLeft);
           setbakedRight(false);
@@ -299,18 +276,22 @@ const ProjectModels = (props) => {
           setbakedLeft(false);
         }}
       />
-      <animated.mesh
+      <mesh
         receiveShadow
         castShadow
         material={materials["Material.001"]}
         geometry={nodes.fireferretleft.geometry}
-        position={[16.84, 0.67, 4.49]}
-        rotation={[-Math.PI, 0, -Math.PI]}
+        position={fireferretLeftpo}
+        rotation={[1.57, 0, -Math.PI]}
         scale={[0.55, 0.29, 0.14]}
-        {...springArrow1}
-        {...bindArrow1()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setfireferretLeftpo([20.8, 0.3, 4.49]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setfireferretLeftpo([20.8, 0.05, 4.49]);
+        }}
         onClick={() => {
           setfireLeft(!fireLeft);
           setbakedRight(false);
@@ -318,18 +299,22 @@ const ProjectModels = (props) => {
           setbakedLeft(false);
         }}
       />
-      <animated.mesh
+      <mesh
         receiveShadow
         castShadow
         material={materials["Material.001"]}
         geometry={nodes.bakedleft.geometry}
-        position={[-5.12, 0.67, 4.49]}
-        rotation={[-Math.PI, 0, -Math.PI]}
+        position={bakedLeftpo}
+        rotation={[1.57, 0, -Math.PI]}
         scale={[0.55, 0.29, 0.14]}
-        {...springArrow2}
-        {...bindArrow2()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setbakedLeftpo([-1, 0.3, 4.49]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setbakedLeftpo([-1, 0.05, 4.49]);
+        }}
         onClick={() => {
           setbakedLeft(!bakedLeft);
           setbakedRight(false);
@@ -337,18 +322,22 @@ const ProjectModels = (props) => {
           setreusdRight(false);
         }}
       />
-      <animated.mesh
+      <mesh
         receiveShadow
         castShadow
         material={materials["Material.001"]}
         geometry={nodes.bakedright.geometry}
-        position={[5.17, 0.67, 4.49]}
-        rotation={[0, -0.2, 0]}
+        position={bakedRightpo}
+        rotation={[1.57, 0, -0.01]}
         scale={[0.55, 0.29, 0.14]}
-        {...springArrow3}
-        {...bindArrow3()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setbakedRightpo([1, 0.3, 4.49]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setbakedRightpo([1, 0.05, 4.49]);
+        }}
         onClick={() => {
           setbakedRight(!bakedRight);
           setbakedLeft(false);
@@ -396,13 +385,7 @@ const Project = () => {
               and built this website to allow customers to get a good idea of
               this bakery.
             </p>
-            <button
-              onClick={bakedBreadLink}
-              onClick={bakedBreadLink}
-              onClick={bakedBreadLink}
-            >
-              Visit The Site
-            </button>
+            <button onClick={bakedBreadLink}>Visit The Site</button>
           </div>
         )}
         {bakedLeft && (

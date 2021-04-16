@@ -1,7 +1,7 @@
 import React, { useRef, Suspense, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "react-three-fiber";
-import { useSpring, animated } from "@react-spring/three";
+import { useSpring, a } from "@react-spring/three";
 import { useHover } from "react-use-gesture";
 import { Physics, usePlane } from "@react-three/cannon";
 import "../styles/Skills.css";
@@ -26,78 +26,16 @@ function SkillModel(props) {
   useEffect(() => {
     actionPlay();
   }, []);
-  const [springFont, setspringFont] = useSpring(() => ({
-    scale: [0.01, 0.01, 0.01],
-  }));
-  const bindFont = useHover(({ hovering }) =>
-    setspringFont({
-      scale: hovering ? [0.013, 0.013, 0.013] : [0.01, 0.01, 0.01],
-    })
-  );
-  const [springHtml, setsprinHtml] = useSpring(() => ({
-    position: [-2.25, 0.06, -3.74],
-  }));
-  const bindHtml = useHover(({ hovering }) =>
-    setsprinHtml({
-      position: hovering ? [-2.25, 0.5, -3.74] : [-2.25, 0.06, -3.74],
-    })
-  );
-  const [springCSS, setsprinCSS] = useSpring(() => ({
-    position: [-2.26, 0.06, -2.69],
-  }));
-  const bindCSS = useHover(({ hovering }) =>
-    setsprinCSS({
-      position: hovering ? [-2.26, 0.5, -2.69] : [-2.26, 0.06, -2.69],
-    })
-  );
-  const [springJS, setsprinJS] = useSpring(() => ({
-    position: [-2.25, 0.06, -1.74],
-  }));
-  const bindJS = useHover(({ hovering }) =>
-    setsprinJS({
-      position: hovering ? [-2.25, 0.5, -1.74] : [-2.25, 0.06, -1.74],
-    })
-  );
-  const [springMongoDB, setsprinMongoDB] = useSpring(() => ({
-    position: [-2.26, 0.06, 3.2],
-  }));
-  const bindMongoDB = useHover(({ hovering }) =>
-    setsprinMongoDB({
-      position: hovering ? [-2.26, 0.5, 3.2] : [-2.26, 0.06, 3.2],
-    })
-  );
-  const [springNode, setsprinNode] = useSpring(() => ({
-    position: [-2.24, 0.06, 0.23],
-  }));
-  const bindNode = useHover(({ hovering }) =>
-    setsprinNode({
-      position: hovering ? [-2.24, 0.5, 0.23] : [-2.24, 0.06, 0.23],
-    })
-  );
-  const [springReact, setsprinReact] = useSpring(() => ({
-    position: [-2.26, 0.06, -0.71],
-  }));
-  const bindReact = useHover(({ hovering }) =>
-    setsprinReact({
-      position: hovering ? [-2.26, 0.5, -0.71] : [-2.26, 0.06, -0.71],
-    })
-  );
-  const [springSketch, setsprinSketch] = useSpring(() => ({
-    position: [-2.25, 0.06, 2.2],
-  }));
-  const bindSketch = useHover(({ hovering }) =>
-    setsprinSketch({
-      position: hovering ? [-2.25, 0.5, 2.2] : [-2.25, 0.06, 2.2],
-    })
-  );
-  const [springUI, setsprinUI] = useSpring(() => ({
-    position: [-2.25, 0.06, 1.21],
-  }));
-  const bindUI = useHover(({ hovering }) =>
-    setsprinUI({
-      position: hovering ? [-2.25, 0.5, 1.21] : [-2.25, 0.06, 1.21],
-    })
-  );
+
+  const [Cssposition, setCss] = useState([-2.26, 0.06, -2.69]);
+  const [Htmlposition, setHtml] = useState([-2.25, 0.06, -3.74]);
+  const [JSposition, setJS] = useState([-2.25, 0.06, -1.74]);
+  const [MongoDBposition, setMongoDB] = useState([-2.26, 0.06, 3.2]);
+  const [Nodeposition, setNode] = useState([-2.24, 0.06, 0.23]);
+  const [Reactposition, setReact] = useState([-2.26, 0.06, -0.71]);
+  const [Sketch, setSketch] = useState([-2.25, 0.06, 2.2]);
+  const [UIposition, setUI] = useState([-2.25, 0.06, 1.21]);
+  const [Clickme, setClickme] = useState([0.01, 0.01, 0.01]);
 
   const dummy = new THREE.Vector3();
   useFrame((state, delta) => {
@@ -116,15 +54,19 @@ function SkillModel(props) {
   });
   return (
     <group ref={group} {...props} dispose={null}>
-      <animated.group
+      <group
         name="Css"
-        position={[-2.26, 0.06, -2.69]}
+        position={Cssposition}
         rotation={[0, -0.01, -0.01]}
         scale={[0.504, 1, 0.537]}
-        {...springCSS}
-        {...bindCSS()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setCss([-2.26, 0.5, -2.69]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setCss([-2.26, 0.06, -2.69]);
+        }}
       >
         <mesh
           receiveShadow
@@ -144,7 +86,7 @@ function SkillModel(props) {
           material={materials["Material.005"]}
           geometry={nodes.Text001_3.geometry}
         />
-      </animated.group>
+      </group>
       <mesh
         name="Fense_1001"
         material={materials["lambert37.034"]}
@@ -163,15 +105,19 @@ function SkillModel(props) {
         receiveShadow
         castShadow
       />
-      <animated.group
+      <group
         name="Html"
-        position={[-2.25, 0.06, -3.74]}
+        position={Htmlposition}
         rotation={[0.01, -0.01, 0]}
         scale={[0.504, 1, 0.537]}
-        {...springHtml}
-        {...bindHtml()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setHtml([-2.25, 0.5, -3.74]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setHtml([-2.25, 0.06, -3.74]);
+        }}
       >
         <mesh
           material={materials["Material.014"]}
@@ -191,16 +137,20 @@ function SkillModel(props) {
           receiveShadow
           castShadow
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         name="JS"
-        position={[-2.25, 0.06, -1.74]}
+        position={JSposition}
         rotation={[0, -0.01, 0]}
         scale={[0.504, 1, 0.537]}
-        {...springJS}
-        {...bindJS()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setJS([-2.25, 0.5, -1.74]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setJS([-2.25, 0.06, -1.74]);
+        }}
       >
         <mesh
           material={materials["Material.014"]}
@@ -220,16 +170,20 @@ function SkillModel(props) {
           receiveShadow
           castShadow
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         name="Mongodb"
-        position={[-2.26, 0.06, 3.2]}
+        position={MongoDBposition}
         rotation={[-0.01, -0.01, 0]}
         scale={[0.504, 1, 0.537]}
-        {...springMongoDB}
-        {...bindMongoDB()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setMongoDB([-2.26, 0.5, 3.2]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setMongoDB([-2.26, 0.06, 3.2]);
+        }}
       >
         <mesh
           material={materials["Material.014"]}
@@ -249,16 +203,20 @@ function SkillModel(props) {
           receiveShadow
           castShadow
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         name="Node"
-        position={[-2.24, 0.06, 0.23]}
+        position={Nodeposition}
         rotation={[-0.01, -0.01, 0]}
         scale={[0.504, 1, 0.537]}
-        {...springNode}
-        {...bindNode()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setNode([-2.24, 0.5, 0.23]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setNode([-2.24, 0.06, 0.23]);
+        }}
       >
         <mesh
           material={materials["Material.014"]}
@@ -278,16 +236,20 @@ function SkillModel(props) {
           receiveShadow
           castShadow
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         name="React"
-        position={[-2.26, 0.06, -0.71]}
+        position={Reactposition}
         rotation={[-0.01, -0.01, 0]}
         scale={[0.504, 1, 0.537]}
-        {...springReact}
-        {...bindReact()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setReact([-2.26, 0.5, -0.71]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setReact([-2.26, 0.06, -0.71]);
+        }}
       >
         <mesh
           material={materials["Material.014"]}
@@ -307,16 +269,20 @@ function SkillModel(props) {
           receiveShadow
           castShadow
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         name="sketch"
-        position={[-2.25, 0.06, 2.2]}
+        position={Sketch}
         rotation={[0.01, -0.01, 0]}
         scale={[0.504, 1, 0.537]}
-        {...springSketch}
-        {...bindSketch()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setSketch([-2.25, 0.5, 2.2]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setSketch([-2.25, 0.06, 2.2]);
+        }}
       >
         <mesh
           material={materials["Material.014"]}
@@ -336,16 +302,20 @@ function SkillModel(props) {
           receiveShadow
           castShadow
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         name="UI"
-        position={[-2.25, 0.06, 1.21]}
+        position={UIposition}
         rotation={[-0.01, -0.01, 0]}
         scale={[0.504, 1, 0.537]}
-        {...springUI}
-        {...bindUI()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setUI([-2.25, 0.5, 1.21]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setUI([-2.25, 0.06, 1.21]);
+        }}
       >
         <mesh
           material={materials["Material.014"]}
@@ -365,7 +335,7 @@ function SkillModel(props) {
           receiveShadow
           castShadow
         />
-      </animated.group>
+      </group>
       <group
         position={[3.19, 0, -1.2]}
         rotation={[Math.PI / 2, 0, 0.01]}
@@ -449,18 +419,22 @@ function SkillModel(props) {
           castShadow
         />
       </group>
-      <animated.mesh
+      <mesh
         material={materials["lambert18.001"]}
         geometry={nodes.wheat1001.geometry}
         position={[9.32, 0, 4.5]}
         rotation={[Math.PI / 2, 0, -1.17]}
-        scale={[0.01, 0.01, 0.01]}
+        scale={Clickme}
         receiveShadow
         castShadow
-        {...springFont}
-        {...bindFont()}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true);
+          setClickme([0.011, 0.01, 0.011]);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          setClickme([0.01, 0.01, 0.01]);
+        }}
         onClick={() => set(!zoom)}
       />
       <mesh

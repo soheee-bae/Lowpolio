@@ -1,14 +1,10 @@
 import React, { useRef, Suspense, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "react-three-fiber";
-import { useSpring, animated, a } from "@react-spring/three";
-import { useHover } from "react-use-gesture";
-import { proxy, useProxy } from "valtio";
 import { Physics, usePlane } from "@react-three/cannon";
 import { useAnimations } from "@react-three/drei";
 import * as THREE from "three";
 import "../styles/Home.css";
-import Navbar from "./Navbar";
 
 const Lights = () => {
   return (

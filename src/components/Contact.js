@@ -1,8 +1,6 @@
 import React, { useRef, Suspense, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "react-three-fiber";
-import { useSpring, animated, a } from "@react-spring/three";
-import { useHover } from "react-use-gesture";
 import { proxy, useProxy } from "valtio";
 import { Physics, usePlane } from "@react-three/cannon";
 import * as THREE from "three";
@@ -25,36 +23,17 @@ function ContactModel(props) {
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "auto";
   }, [hovered]);
-  const [springFont, setspringFont] = useSpring(() => ({
-    scale: [1.16, 1.16, 1.16],
-  }));
-  const [springFont1, setspringFont1] = useSpring(() => ({
-    scale: [0.17, 0.15, 0.16],
-  }));
-  const [springFont2, setspringFont2] = useSpring(() => ({
-    scale: [1.04, 0.02, 1.04],
-  }));
-  const [springFont3, setspringFont3] = useSpring(() => ({
-    scale: [1.04, 0.02, 1.04],
-  }));
-  const bindFont = useHover(({ hovering }) =>
-    setspringFont({ scale: hovering ? [1.2, 1.2, 1.2] : [1.16, 1.16, 1.16] })
-  );
-  const bindFont1 = useHover(({ hovering }) =>
-    setspringFont1({ scale: hovering ? [0.17, 0.7, 0.16] : [0.17, 0.15, 0.16] })
-  );
-  const bindFont2 = useHover(({ hovering }) =>
-    setspringFont2({ scale: hovering ? [1.04, 0.2, 1.04] : [1.04, 0.02, 1.04] })
-  );
-  const bindFont3 = useHover(({ hovering }) =>
-    setspringFont3({ scale: hovering ? [1.04, 0.2, 1.04] : [1.04, 0.02, 1.04] })
-  );
+
+  const [gmailposition, setGmail] = useState([-3.2, -2.4, 0.04]);
+  const [githubposition, setGithub] = useState([0, -1.6, 0.04]);
+  const [linkedinposition, setLinkedin] = useState([2.3, -1.6, 0.04]);
+
   const dummy = new THREE.Vector3();
   useFrame((state, delta) => {
     const step = 0.1;
     state.camera.fov = THREE.MathUtils.lerp(
       state.camera.fov,
-      zoom ? 50 :48,
+      zoom ? 50 : 48,
       step
     );
     state.camera.position.lerp(
@@ -102,11 +81,10 @@ function ContactModel(props) {
           geometry={nodes.Mesh003_4.geometry}
         />
       </group>
-      <animated.group
+      <group
         position={[0.9, 1.44, 0.14]}
         rotation={[1.57, -0.15, 0]}
-        {...springFont}
-        {...bindFont()}
+        scale={[1.16, 1.16, 1.16]}
       >
         <mesh
           receiveShadow
@@ -120,7 +98,7 @@ function ContactModel(props) {
           material={materials["Material.024"]}
           geometry={nodes.Text004_1.geometry}
         />
-      </animated.group>
+      </group>
       <group
         position={[2.22, 0, 0.35]}
         rotation={[0, 0, 1.56]}
@@ -180,20 +158,21 @@ function ContactModel(props) {
           geometry={nodes.Cube006_9.geometry}
         />
       </group>
-      <animated.group
+      <group
         onClick={() => alert("Email me at baesohee28@gmail.com !")}
-        position={[-3.2, -2.4, 0.04]}
+        position={gmailposition}
         rotation={[1.57, 0, 0]}
+        scale={[0.17, 0.15, 0.16]}
         onPointerOver={() => {
           state.items.gmail = "#bb001b";
           setHovered(true);
+          setGmail([-3.2, -2.4, 0.1]);
         }}
         onPointerOut={() => {
           state.items.gmail = "#ffffff";
           setHovered(false);
+          setGmail([-3.2, -2.4, 0.04]);
         }}
-        {...springFont1}
-        {...bindFont1()}
       >
         <mesh
           receiveShadow
@@ -212,21 +191,22 @@ function ContactModel(props) {
           material={materials["Material.037"]}
           geometry={nodes.Text006_2.geometry}
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         onClick={() => (window.location.href = "https://github.com/sohee28")}
-        position={[2.3, -1.6, 0.04]}
+        position={linkedinposition}
         rotation={[1.57, 0, 0]}
+        scale={[1.04, 0.02, 1.04]}
         onPointerOver={() => {
           state.items.linkedin = "#000000";
           setHovered(true);
+          setLinkedin([2.3, -1.6, 0.065]);
         }}
         onPointerOut={() => {
           state.items.linkedin = "#ffffff";
           setHovered(false);
+          setLinkedin([2.3, -1.6, 0.04]);
         }}
-        {...springFont2}
-        {...bindFont2()}
       >
         <mesh
           material-color={snap.items.linkedin}
@@ -241,24 +221,25 @@ function ContactModel(props) {
           material={materials["Material.040"]}
           geometry={nodes.Cube008_1.geometry}
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         onClick={() =>
           (window.location.href =
             "https://www.linkedin.com/in/sohee-bae-b37a9a166/")
         }
-        position={[0, -1.6, 0.04]}
+        position={githubposition}
         rotation={[1.57, 0, 0]}
+        scale={[1.04, 0.02, 1.04]}
         onPointerOver={() => {
           state.items.github = "#0e56ff";
           setHovered(true);
+          setGithub([0, -1.6, 0.065]);
         }}
         onPointerOut={() => {
           state.items.github = "#ffffff";
           setHovered(false);
+          setGithub([0, -1.6, 0.04]);
         }}
-        {...springFont3}
-        {...bindFont3()}
       >
         <mesh
           material-color={snap.items.github}
@@ -273,7 +254,7 @@ function ContactModel(props) {
           material={materials["Material.042"]}
           geometry={nodes.Cube009_1.geometry}
         />
-      </animated.group>
+      </group>
     </group>
   );
 }

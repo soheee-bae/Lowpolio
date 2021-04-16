@@ -76,7 +76,7 @@ function AboutModel(props) {
   });
   return (
     <group ref={group} {...props} dispose={null}>
-      <animated.group
+      <group
         name="earth"
         position={[1.07, 2.09, -2.14]}
         rotation={[2.2, -1.08, -0.74]}
@@ -107,8 +107,8 @@ function AboutModel(props) {
           material={materials["Material.008"]}
           geometry={nodes.Icosphere004_2.geometry}
         />
-      </animated.group>
-      <animated.group
+      </group>
+      <group
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         onClick={() => {
@@ -154,7 +154,7 @@ function AboutModel(props) {
           rotation={[1.57, 0, -0.41]}
           scale={[0.13, 0.17, 0.12]}
         />
-      </animated.group>
+      </group>
       <group
         position={[0.39, 0.3, 0.83]}
         rotation={[0, 0.83, 0]}
@@ -179,7 +179,7 @@ function AboutModel(props) {
           geometry={nodes.Cylinder003_2.geometry}
         />
       </group>
-      <animated.group
+      <group
         name="Book"
         position={[2.11, 1.16, 1.1]}
         rotation={[0, -0.05, 0]}
@@ -216,7 +216,7 @@ function AboutModel(props) {
           material={materials["Material.015"]}
           geometry={nodes.Cube001_3.geometry}
         />
-      </animated.group>
+      </group>
       <group
         position={[0.98, 0.56, 0.59]}
         rotation={[Math.PI / 2, 0, 2.72]}

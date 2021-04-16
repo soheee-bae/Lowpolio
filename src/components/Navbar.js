@@ -10,7 +10,7 @@ const Navbar = () => {
       <div className="navi-ul-left">
         <Link to="/" style={{ textDecoration: "none" }}>
           <FontAwesomeIcon className="logo" icon={faCampground} />
-          <p>BSH</p>
+          <p>SoHee</p>
         </Link>
       </div>
       <div className="navi-ul">
